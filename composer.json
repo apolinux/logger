@@ -1,0 +1,24 @@
+{
+    "name": "apolinux/logger",
+    "authors": [
+        {
+            "name": "Carlos Arce",
+            "email": "apolinux@gmail.com"
+        }
+    ],
+    "description": "Simple logger",
+    "type": "library",
+    "autoload": {
+        "psr-4": { "Apolinux\\": "src/" },
+        "files" : [
+            "src/helper.php"
+        ]
+    },
+    "license": "MIT",
+    "require-dev": {
+        "phpunit/phpunit":">=9.5"
+    },
+    "require": {
+        "php" : ">=7.4"
+    }
+}
