@@ -2,6 +2,8 @@
 
 namespace Apolinux ;
 
+use DateTime;
+
 /**
  * Write lines to file using logging format
  * 
@@ -93,7 +95,7 @@ Class Logger{
   public static function log($data_log, $tag = self::DEFAULT_TAG){
     $log_info = self::getDataFromFormat(
       [
-        'date'    => date(self::$date_format),
+        'date'    => (new DateTime())->format(self::$date_format),
         'sid'     => self::$session_id,
         'tag'     => $tag ,
         'context' => self::serialize($data_log) ,

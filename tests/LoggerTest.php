@@ -82,8 +82,11 @@ class LoggerTest extends PHPUnit_Framework_TestCase{
     }
 
     public function tearDown() : void{
-      if(file_exists($this->logfile)){
+      /*if(file_exists($this->logfile)){
         unlink($this->logfile);
+      }*/
+      foreach(glob(__DIR__.'/*.log') as $logfile){
+        unlink($logfile);
       }
     }
 
