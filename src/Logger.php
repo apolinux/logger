@@ -4,6 +4,10 @@ namespace Apolinux ;
 
 use DateTime;
 
+if(! defined('STDOUT')){
+  define('STDOUT',1);
+}
+
 /**
  * Write lines to file using logging format
  * 
@@ -102,7 +106,7 @@ Class Logger{
       ], 
       self::$context_format);
       
-    if(self::$logname == STDOUT){
+    if(defined('STDOUT') &&  self::$logname == STDOUT){
       echo($log_info .PHP_EOL );
       return ;
     }
