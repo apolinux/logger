@@ -64,7 +64,7 @@ Class Logger{
 
   /**
    * set initial configuration for logging
-   * @param string $filename file name to save log data
+   * @param string|int $filename file name to save log data
    * @param string $context_format default '{date}|{sid}{tag}|{context}'. format of output text
    * @param string $date_format 'c' by default. Date format used by "date" function to define in each line
    * @param string $file_date_format format of date file, default "Ymd"
@@ -227,7 +227,11 @@ Class Logger{
       $date = date(self::$file_date_format);
 
       if(key_exists('basename',$pathinfo)){
-        $newname = sprintf("%s%s-%s.%s", $pathinfo['filename'] ,$alt_suffix1 , $date , $pathinfo['extension']);
+        if(key_exists('extension',$pathinfo)){
+          $newname = sprintf("%s%s-%s.%s", $pathinfo['filename'] ,$alt_suffix1 , $date , $pathinfo['extension']);
+        }else{
+          $newname = sprintf("%s%s-%s", $pathinfo['filename'], $alt_suffix1 , $date) ;
+        }
       }else{
         $newname = sprintf("%s%s-%s", $pathinfo['basename'], $alt_suffix1 , $date) ;
       }

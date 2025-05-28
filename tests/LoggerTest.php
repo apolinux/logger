@@ -11,10 +11,12 @@ if(!defined('STDOUT')){
 class LoggerTest extends PHPUnit_Framework_TestCase{
   public $logfile ;
   public $logfile_stdin ;
+  public $logfile_noext ;
 
     public function setUp() : void{
         parent::setUp();
         $this->logfile =  __DIR__  . '/test.log' ;
+        $this->logfile_noext =  __DIR__  . '/test' ;
         $this->logfile_stdin = STDOUT ;
     }
 
@@ -67,7 +69,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase{
         $this->assertFileExists($logfile) ;
         $this->assertStringContainsString(date('Y-m-d'), file_get_contents($logfile)) ;
         $this->assertStringContainsString('lorem ipsum dolor sit amet', file_get_contents($logfile)) ;
-        $this->assertStringContainsString('@bla@', file_get_contents($logfile)) ;
+        $this->assertMatchesRegularExpression('@bla@', file_get_contents($logfile)) ;
     }
 
     public function testLogCustomDateFormatOk(){
@@ -82,9 +84,9 @@ class LoggerTest extends PHPUnit_Framework_TestCase{
     }
 
     public function tearDown() : void{
-      /*if(file_exists($this->logfile)){
-        unlink($this->logfile);
-      }*/
+      if(file_exists($this->logfile_noext)){
+        unlink($this->logfile_noext);
+      }
       foreach(glob(__DIR__.'/*.log') as $logfile){
         unlink($logfile);
       }
@@ -112,5 +114,15 @@ class LoggerTest extends PHPUnit_Framework_TestCase{
         Logger::log($text);
         $output = ob_get_clean();
         $this->assertStringContainsString($text, $output);
+    }
+
+    public function testLogNameNoExtensionErr(){
+        Logger::init($this->logfile_noext,Logger::DEFAULT_CONTEXT_FORMAT,'c','');
+        $logfile = Logger::logNameFormatted();
+        Logger::log('lorem ipsum') ;
+        $this->assertFileExists($logfile) ;
+        $this->assertStringContainsString(date('Y-m-d'), file_get_contents($logfile)) ;
+        $this->assertStringContainsString('lorem ipsum', file_get_contents($logfile)) ;
+        $this->assertStringContainsString('default', file_get_contents($logfile)) ;
     }
 }
